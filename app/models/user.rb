@@ -40,15 +40,14 @@ class User < ApplicationRecord
     end
     
     #お気に入り
-    
     def favor(micropost)
         self.favorites.find_or_create_by(micropost_id: micropost.id)
     end
     
-    # def unfavor(other_micropost)
-    #     favorite= self.favorites.find_by(micropost_id: other_micropost.id)
-    #     favorite.destroy if favorite
-    # end
+    def unfavor(micropost)
+        favorite = self.favorites.find_by(micropost_id: micropost.id)
+        favorite.destroy if favorite
+    end
     
     def favoring?(micropost)
         self.favorites.exists?(micropost_id: micropost.id)
