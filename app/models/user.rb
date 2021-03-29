@@ -6,18 +6,18 @@ class User < ApplicationRecord
                       uniqueness: { case_sensitive: false }
     has_secure_password
     
-    #follow
+
     has_many :microposts
+    #follow
     has_many :relationships
     has_many :followings, through: :relationships, source: :follow
     has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
     has_many :followers, through: :reverses_of_relationship, source: :user
-    
     #お気に入り
     has_many :favorites
-    has_many :microposts, through: :favorites, source: :micropost
-    has_many :reverses_of_relationship, class_name: 'favorite', foreign_key: 'micropost_id'
-    has_many :users, through: :reverses_of_relationship, source: :user
+    has_many :favoring, through: :favorites, source: :micropost
+    #has_many :reverses_of_relationship, class_name: 'favorite', foreign_key: 'micropost_id'
+    #has_many :users, through: :reverses_of_relationship, source: :micropost
     
     #follow
     def follow(other_user)
@@ -39,18 +39,22 @@ class User < ApplicationRecord
         Micropost.where(user_id: self.following_ids + [self.id])
     end
     
-    #お気に入り
+    #お気に入り関連
+    #お気に入りに追加
     def favor(micropost)
         self.favorites.find_or_create_by(micropost_id: micropost.id)
     end
-    
+    #お気に入りから削除  
     def unfavor(micropost)
         favorite = self.favorites.find_by(micropost_id: micropost.id)
         favorite.destroy if favorite
     end
-    
+    #すでにお気に入りか判定 
     def favoring?(micropost)
         self.favorites.exists?(micropost_id: micropost.id)
     end
-    
+    #お気に入り一覧取得
+    #def feed_favorites
+    #    Favorite.where(user_id: self.id)
+    #end
 end
