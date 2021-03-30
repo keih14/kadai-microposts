@@ -13,6 +13,11 @@
           <% if current_user == micropost.user %>
             <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
           <% end %>
+          <% if current_user.favoring?(micropost) %>
+             <%= link_to "UnLike", favorite_url(id: micropost.id), method: :delete, data: { confirm: "dYou sure?" }, class: 'btn btn-warning btn-sm' %>
+          <% else %>
+             <%= link_to "Like", favorites_url(micropost_id: micropost.id), method: :post, data: { confirm: "You sure?" }, class: 'btn btn-success btn-sm' %>
+          <% end %>
         </div>
       </div>
     </li>
