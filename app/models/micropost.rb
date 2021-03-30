@@ -3,5 +3,7 @@ class Micropost < ApplicationRecord
   
   validates :content, presence: true, length: { maximum: 255 }
   
-  has_many :users, through: :favorites
+  #お気に入り
+  has_many :favorites
+  has_many :favusers, through: :favorites, source: :user
 end
