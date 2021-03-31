@@ -16,8 +16,6 @@ class User < ApplicationRecord
     #お気に入り
     has_many :favorites
     has_many :favoring, through: :favorites, source: :micropost
-    #has_many :reverses_of_relationship, class_name: 'Favorite', foreign_key: 'micropost_id'
-    #has_many :favusers, through: :reverses_of_relationship, source: :user
     
     #follow
     def follow(other_user)
@@ -39,7 +37,7 @@ class User < ApplicationRecord
         Micropost.where(user_id: self.following_ids + [self.id])
     end
     
-    #お気に入り関連
+    #お気に入り
     #お気に入りに追加
     def favor(micropost)
         #self.favorites.find_or_create_by(micropost_id: micropost.id)
@@ -54,8 +52,5 @@ class User < ApplicationRecord
     def favoring?(micropost)
         self.favorites.exists?(micropost_id: micropost.id)
     end
-    #お気に入り一覧取得
-    #def feed_favorites
-    #    Favorite.where(user_id: self.id)
-    #end
+
 end
