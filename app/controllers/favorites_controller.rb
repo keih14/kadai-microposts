@@ -10,7 +10,6 @@ class FavoritesController < ApplicationController
   def destroy
     micropost = Micropost.find(params[:id])
     current_user.unfavor(micropost)
-    current_user.unfavor(micropost)
     flash[:success] = 'ツイートをお気に入りから削除しました'
     redirect_to :root
   end
